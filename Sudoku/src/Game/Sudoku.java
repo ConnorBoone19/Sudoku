@@ -14,7 +14,7 @@ public class Sudoku {
         // TODO add a feature to create a random board
         // TODO using algorithm, make multiple DIFFERENT boards
         // TODO add multiple difficulties
-        // TODO add a variable size board (16x16, 
+        // TODO add a variable size board (16x16, 4x4)
 
     // TODO GUI
         // TODO add feature to show steps of algorithm in GUI
