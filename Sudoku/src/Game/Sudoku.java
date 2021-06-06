@@ -3,11 +3,13 @@ package Game;
 public class Sudoku {
 
     public static int[][] board;
+    private static int[][] correctBoard;
     public static int dimensions;
     public static double familyDBL;
     public static int family;
     private static boolean showSteps = false;
     private static boolean testing = true;
+    private static int turns = 0;
 
     // TODO CODE
         // TODO add a feature to change size of board
@@ -19,9 +21,9 @@ public class Sudoku {
     // TODO GUI
         // TODO add feature to show steps of algorithm in GUI
 
-
-    public static boolean setBoard(){
-        board = new int[][]{ { 3, 0, 6, 5, 0, 8, 4, 0, 0 },
+    public static void createBoard(){
+        board = new int[][]{
+                { 3, 0, 6, 5, 0, 8, 4, 0, 0 },
                 { 5, 2, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 8, 7, 0, 0, 0, 0, 3, 1 },
                 { 0, 0, 3, 0, 1, 0, 0, 8, 0 },
@@ -30,6 +32,10 @@ public class Sudoku {
                 { 1, 3, 0, 0, 0, 0, 2, 5, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 7, 4 },
                 { 0, 0, 5, 2, 0, 6, 3, 0, 0 } };
+    }
+
+    public static boolean setBoard(){
+        createBoard();
         dimensions = board.length;
 
         // the 2x2,3x3,4x4 etc grouping of squares
@@ -38,6 +44,19 @@ public class Sudoku {
         testing("Set board");
         return family == familyDBL;
     }
+    public static void corectBoard(int[][] matrix, int row, int column){
+        if (setBoard()) {
+            showBoard(matrix);
+            System.out.println("\n");
+            if (solveBoard(matrix, row, column)) {
+                showBoard(matrix);
+            } else {
+                System.out.println("Error, board cannot be solved");
+            }
+        } else {
+            System.out.print("Error the board size entered is invalid. Error 2: Board is not a perfect square ");
+        }
+    }
 
     public static boolean solveBoard(int[][] board, int row, int column){
         if (column == dimensions && row == (dimensions - 1)){
@@ -45,7 +64,7 @@ public class Sudoku {
         }
 
         // if the algorithm reaches the end of the row it goes down to the next column
-        // ie. if on a 5x5 board if the algorithm reaches row 1 of column 5 it will then go to row 2 column 0
+            // ie. if on a 5x5 board if the algorithm reaches row 1 of column 4 it will then go to row 2 column 0
         if (column == dimensions){
             row++;
             column = 0;
@@ -57,6 +76,7 @@ public class Sudoku {
             if (showSteps){
                 showBoard(board);
                 }
+            turns++;
             return solveBoard(board,row,(column+1));
 
         }
@@ -64,6 +84,7 @@ public class Sudoku {
         for (int number = 1; number <=dimensions; number++){
             if (isValid(board, row, column, number)){
                 board[row][column] = number;
+
                 if (solveBoard(board,row,(column+1))){
                     return true;
                 }
@@ -133,19 +154,11 @@ public class Sudoku {
 
         // Set to true if wanting to see how well algorithm worked and where it needs improvement
         showSteps = false;
+        createBoard();
+        corectBoard(board,0,0);
 
+        System.out.println(turns);
 
-        if (setBoard()) {
-            showBoard(board);
-            System.out.println("\n");
-            if (solveBoard(board, 0, 0)) {
-                showBoard(board);
-            } else {
-                System.out.println("Error, board cannot be solved");
-            }
-        } else {
-            System.out.print("Error the board size entered is invalid. Error 2: Board is not a perfect square ");
-        }
     }
 
 }
