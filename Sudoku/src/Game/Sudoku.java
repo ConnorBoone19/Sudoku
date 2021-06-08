@@ -8,7 +8,7 @@ public class Sudoku {
     public static double familyDBL;
     public static int family;
     private static boolean showSteps = false;
-    private static boolean testing = true;
+    private static boolean testing = false;
     private static int turns = 0;
 
     // TODO CODE
@@ -34,6 +34,13 @@ public class Sudoku {
                 { 0, 0, 5, 2, 0, 6, 3, 0, 0 } };
     }
 
+    public static int[][] getCorrectBoard(){
+        createBoard();
+        solve(board,0,0);
+        correctBoard = board;
+        return correctBoard;
+    }
+
     public static boolean setBoard(){
         createBoard();
         dimensions = board.length;
@@ -44,12 +51,13 @@ public class Sudoku {
         testing("Set board");
         return family == familyDBL;
     }
-    public static void corectBoard(int[][] matrix, int row, int column){
+    public static void solve(int[][] matrix, int row, int column){
         if (setBoard()) {
-            showBoard(matrix);
+            //showBoard(matrix);
             System.out.println("\n");
             if (solveBoard(matrix, row, column)) {
-                showBoard(matrix);
+                board = matrix;
+                showBoard(board);
             } else {
                 System.out.println("Error, board cannot be solved");
             }
@@ -142,6 +150,20 @@ public class Sudoku {
         }
     }
 
+    public static void showBoolBoard(boolean[][] matrix){
+        if (matrix.length == matrix[1].length) {
+            for (int k = 0; k < matrix.length; k++) {
+                for (int j = 0; j <matrix[1].length; j++) {
+                    testing("Show Board Inner");
+                    System.out.print(matrix[k][j] + "\t");
+                }
+                // new line
+                System.out.println();
+            }
+            System.out.println("Number of Rows: " + matrix.length);
+            System.out.println("Number of Columns: " + matrix[1].length);
+        }
+    }
     private static void testing(String area){
         // testing function to make sure code is passing through certain bug areas
         if (testing){
@@ -154,10 +176,8 @@ public class Sudoku {
 
         // Set to true if wanting to see how well algorithm worked and where it needs improvement
         showSteps = false;
-        createBoard();
-        corectBoard(board,0,0);
+        showBoard(getCorrectBoard());
 
-        System.out.println(turns);
 
     }
 
