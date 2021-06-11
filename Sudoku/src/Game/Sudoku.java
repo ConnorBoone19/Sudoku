@@ -9,7 +9,6 @@ public class Sudoku {
     public static int family;
     private static boolean showSteps = false;
     private static boolean testing = false;
-    private static int turns = 0;
 
     // TODO CODE
         // TODO add a feature to change size of board
@@ -20,6 +19,7 @@ public class Sudoku {
 
     // TODO GUI
         // TODO add feature to show steps of algorithm in GUI
+
 
     public static void createBoard(){
         board = new int[][]{
@@ -55,7 +55,7 @@ public class Sudoku {
         if (setBoard()) {
             //showBoard(matrix);
             System.out.println("\n");
-            if (solveBoard(matrix, row, column,0)) {
+            if (solveBoard(matrix, row, column)) {
                 board = matrix;
                 showBoard(board);
             } else {
@@ -66,8 +66,8 @@ public class Sudoku {
         }
     }
 
-    public static boolean solveBoard(int[][] board, int row, int column, int steps){
-        if (steps == 0) {
+    public static boolean solveBoard(int[][] board, int row, int column){
+
             if (column == dimensions && row == (dimensions - 1)) {
                 return true;
             }
@@ -85,8 +85,7 @@ public class Sudoku {
                 if (showSteps) {
                     showBoard(board);
                 }
-                turns++;
-                return solveBoard(board, row, (column + 1), 0);
+                return solveBoard(board, row, (column + 1));
 
             }
 
@@ -94,7 +93,7 @@ public class Sudoku {
                 if (isValid(board, row, column, number)) {
                     board[row][column] = number;
 
-                    if (solveBoard(board, row, (column + 1), 0)) {
+                    if (solveBoard(board, row, (column + 1))) {
                         return true;
                     }
                 }
@@ -102,32 +101,7 @@ public class Sudoku {
             board[row][column] = 0;
             return false;
 
-        }else if (steps == 1) {
 
-            // This is for the hint part of the GUI (See GUI.MENU.menu menuItem1)
-            if (column == dimensions) {
-                row++;
-                column = 0;
-            }
-
-            // if the grid space contains a non 0 the algorithm re-runs itself for the next column
-
-            if (board[row][column] != 0) {
-                if (showSteps) {
-                    showBoard(board);
-                }
-                turns++;
-                return solveBoard(board, row, (column + 1), 0);
-
-            }
-            return false;
-
-        }else{
-            System.out.println(steps);
-            System.out.println("Error in solve function, steps does not equal 0 or 1");
-            System.exit(1);
-            return false;
-        }
     }
 
 
@@ -203,9 +177,17 @@ public class Sudoku {
         testing = false;
 
         // Set to true if wanting to see how well algorithm worked and where it needs improvement
-        showSteps = true;
+        showSteps = false;
+
+        // Algorithm Start
+
         setBoard();
-        solveBoard(board,0,0,0);
+        System.out.println("The starting board is: \n");
+        showBoard(board);
+        System.out.println();
+        solveBoard(board,0,0);
+        System.out.println("The completed board is: \n");
+        showBoard(board);
 
 
     }

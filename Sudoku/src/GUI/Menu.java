@@ -1,5 +1,7 @@
 package GUI;
 
+import Game.Sudoku;
+
 import javax.swing.*;
 import javax.swing.event.MenuDragMouseEvent;
 import javax.swing.event.MenuDragMouseListener;
@@ -16,11 +18,9 @@ public class Menu {
         JMenuBar menuBar = new JMenuBar();
         JMenuItem menuItem1 = new JMenuItem("Hint");
         JMenuItem menuItem2 = new JMenuItem("Reset");
-        JMenuItem menuItem3 = new JMenuItem("Solve");
         JMenuItem menuItemQuit = new JMenuItem("Quit");
         menu2.add(menuItem1);
         menu2.add(menuItem2);
-        menu2.add(menuItem3);
         menu1.add(menuItemQuit);
         menuItemQuit.addActionListener(e -> System.exit(2));
         menuItem2.addActionListener(new ActionListener() {
