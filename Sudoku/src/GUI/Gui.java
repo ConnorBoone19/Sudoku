@@ -6,20 +6,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Arrays;
-import java.util.List;
+
 
 public class Gui {
 
     public static JFrame frame;
     public static JPanel panel;
     public static JPanel subGrid;
+    public static JPanel panel2;
+    public static JPanel mainPanel;
     public static JTextArea text;
+    public static JTextField textField;
     public static int[][] board;
     public static int[][] correctBoard;
     public static boolean[][] boolBoard;
     public static int dimensions;
-    public static boolean isCorrect = true;
 
 
 
@@ -34,6 +35,8 @@ public class Gui {
     }
 
     public static void createBoolBoard(){
+        // Bool Board is a function where if the value entered is correct, it becomes true
+
         boolBoard = new boolean[][]{
                 { false, false, false, false, false, false, false, false, false },
                 { false, false, false, false, false, false, false, false, false },
@@ -54,42 +57,47 @@ public class Gui {
             }
         Sudoku.showBoolBoard(boolBoard);
     }
+
     public static void updateBool(int row, int column, boolean[][] matrix, boolean correct){
 
         // function for updating the bool board for each user input
 
-        if (correct){
-            matrix[row][column] = true;
-        }else if (!correct){
-            matrix[row][column] = false;
-        } else{
-            System.out.println("Error with update bool");
-        }
+        matrix[row][column] = correct;
     }
 
     public static boolean gameOver(int row, boolean[][] matrix){
 
+        // checks to see if it has checked all of the rows for a false value, and then returns true that the game is over
         if(row >= matrix.length){
-            // TODO add a end game gui, to replace the return true part below
             return true;
         }
-        List<boolean[]> rowValues = Arrays.asList(Arrays.asList(matrix).get(row));
-        if(rowValues.contains(false)){
-            return false;
-        }else{
-            return gameOver((row+1),matrix);
+        for (int q = 0; q<dimensions;q++){
+            if (!matrix[row][q]){
+                // if it finds a false value then the game is not over
+                return false;
+            }
         }
+        // Checks to see if there is a false value in the next row
+        return gameOver((row+1),matrix);
     }
 
 
     public static void createGui(){
         frame = new JFrame("Hi");
-        panel = new JPanel(new GridLayout(9,9));
-        panel.setSize(200,200);
-        frame.setSize(300,300);
+        mainPanel = new JPanel(new GridLayout(0,1));
+        panel = new JPanel(new GridLayout(dimensions,dimensions));
+        panel2 = new JPanel();
+        panel2.setMaximumSize(new Dimension(50,50));
+        textField = new JTextField("My Name");
+        textField.setSize(25,50);
+        mainPanel.add(panel);
+        mainPanel.add(textField);
+        frame.setSize(500,500);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(panel);
-        panel.setBackground(Color.BLUE);
+        frame.add(mainPanel);
+
+        new Menu(frame);
+
 
 
 
@@ -97,7 +105,7 @@ public class Gui {
         for (int i = 0; i<=(dimensions-1); i++){
             for (int j = 0; j<=(dimensions-1); j++) {
                 subGrid = new JPanel();
-                subGrid.setSize(20, 20);
+                subGrid.setSize(50, 50);
                 subGrid.setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 panel.add(subGrid);
 
@@ -109,7 +117,6 @@ public class Gui {
                 // if the text box is a 0 then the user can edit it,
                 // otherwise it was a pre-existing number and cannot be edited
                 text.setEditable(canEdit((i),(j)));
-
                 subGrid.add(text);
 
                 int finalRow = i;
@@ -136,20 +143,24 @@ public class Gui {
                                 // Checks against the already solved board to see if its correct
                                 if (correctBoard[(finalRow)][(finalColumn)] == intValue){
 
-                                    System.out.println("The Correct value is " + correctBoard[finalRow][finalColumn]);
                                     System.out.println("Correct");
+                                    System.out.println("The Correct value is: " + correctBoard[finalRow][finalColumn]);
 
                                     // updates location in bool board to be true
-                                    updateBool(finalRow,finalColumn,boolBoard,true);
-                                    gameOver(0, boolBoard);
+                                    updateBool(finalRow, finalColumn, boolBoard, true);
+                                    if (gameOver(0,boolBoard)){
+                                        text.setText("Game Over");
+                                        System.out.println("Exit code: Game is over");
+                                        System.exit(100);
+                                    }
 
                                 } else{
 
-                                    System.out.println("The Correct value is " + correctBoard[finalRow][finalColumn]);
                                     System.out.println("Wrong");
+                                    System.out.println("The Correct value is: " + correctBoard[finalRow][finalColumn]);
 
                                     // updates location in bool board to be false
-                                    updateBool(finalRow,finalColumn,boolBoard,false);
+                                    updateBool(finalRow, finalColumn, boolBoard, false);
                                 }
                             }else {
                                 System.out.println("Not working");
@@ -165,10 +176,14 @@ public class Gui {
 
             }
         }
+
+
         frame.setVisible(true);
     }
 
     public static boolean canEdit(int row, int column){
+        
+        // If the value in the board is 0 (the default value) the user can edit the box
         return board[row][column] == 0;
     }
 
@@ -182,7 +197,7 @@ public class Gui {
 
     public static void main(String[] args) {
         setUp();
-        //createGui();
+        createGui();
 
     }
 }

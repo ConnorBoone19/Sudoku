@@ -55,7 +55,7 @@ public class Sudoku {
         if (setBoard()) {
             //showBoard(matrix);
             System.out.println("\n");
-            if (solveBoard(matrix, row, column)) {
+            if (solveBoard(matrix, row, column,0)) {
                 board = matrix;
                 showBoard(board);
             } else {
@@ -66,40 +66,68 @@ public class Sudoku {
         }
     }
 
-    public static boolean solveBoard(int[][] board, int row, int column){
-        if (column == dimensions && row == (dimensions - 1)){
-            return true;
-        }
+    public static boolean solveBoard(int[][] board, int row, int column, int steps){
+        if (steps == 0) {
+            if (column == dimensions && row == (dimensions - 1)) {
+                return true;
+            }
 
-        // if the algorithm reaches the end of the row it goes down to the next column
+            // if the algorithm reaches the end of the row it goes down to the next column
             // ie. if on a 5x5 board if the algorithm reaches row 1 of column 4 it will then go to row 2 column 0
-        if (column == dimensions){
-            row++;
-            column = 0;
-        }
+            if (column == dimensions) {
+                row++;
+                column = 0;
+            }
 
-        // if the grid space contains a non 0 the algorithm re-runs itself for the next column
+            // if the grid space contains a non 0 the algorithm re-runs itself for the next column
 
-        if (board[row][column] != 0){
-            if (showSteps){
-                showBoard(board);
+            if (board[row][column] != 0) {
+                if (showSteps) {
+                    showBoard(board);
                 }
-            turns++;
-            return solveBoard(board,row,(column+1));
+                turns++;
+                return solveBoard(board, row, (column + 1), 0);
 
-        }
+            }
 
-        for (int number = 1; number <=dimensions; number++){
-            if (isValid(board, row, column, number)){
-                board[row][column] = number;
+            for (int number = 1; number <= dimensions; number++) {
+                if (isValid(board, row, column, number)) {
+                    board[row][column] = number;
 
-                if (solveBoard(board,row,(column+1))){
-                    return true;
+                    if (solveBoard(board, row, (column + 1), 0)) {
+                        return true;
+                    }
                 }
             }
+            board[row][column] = 0;
+            return false;
+
+        }else if (steps == 1) {
+
+            // This is for the hint part of the GUI (See GUI.MENU.menu menuItem1)
+            if (column == dimensions) {
+                row++;
+                column = 0;
+            }
+
+            // if the grid space contains a non 0 the algorithm re-runs itself for the next column
+
+            if (board[row][column] != 0) {
+                if (showSteps) {
+                    showBoard(board);
+                }
+                turns++;
+                return solveBoard(board, row, (column + 1), 0);
+
+            }
+            return false;
+
+        }else{
+            System.out.println(steps);
+            System.out.println("Error in solve function, steps does not equal 0 or 1");
+            System.exit(1);
+            return false;
         }
-        board[row][column] = 0;
-        return false;
     }
 
 
@@ -152,10 +180,10 @@ public class Sudoku {
 
     public static void showBoolBoard(boolean[][] matrix){
         if (matrix.length == matrix[1].length) {
-            for (int k = 0; k < matrix.length; k++) {
-                for (int j = 0; j <matrix[1].length; j++) {
+            for (boolean[] booleans : matrix) {
+                for (int j = 0; j < matrix[1].length; j++) {
                     testing("Show Board Inner");
-                    System.out.print(matrix[k][j] + "\t");
+                    System.out.print(booleans[j] + "\t");
                 }
                 // new line
                 System.out.println();
@@ -175,8 +203,9 @@ public class Sudoku {
         testing = false;
 
         // Set to true if wanting to see how well algorithm worked and where it needs improvement
-        showSteps = false;
-        showBoard(getCorrectBoard());
+        showSteps = true;
+        setBoard();
+        solveBoard(board,0,0,0);
 
 
     }
