@@ -4,9 +4,7 @@ import GUI.Gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.concurrent.TimeUnit;
+
 
 public class MainMenu {
     public static JFrame frame;
@@ -15,6 +13,7 @@ public class MainMenu {
     public static JPanel startPanel;
     public static JTextArea text1;
     public static JTextArea textConfirmButton;
+    // TODO add a help section
     public static JButton help;
     public static JButton easy;
     public static JButton medium;
@@ -32,7 +31,7 @@ public class MainMenu {
 
         panel = new JPanel();
         text1 = new JTextArea("""
-                Welcome to my Sukoku game! \s
+                Welcome to my Sudoku game! \s
                 Please select your difficult below,\s
                 your options are \s
                 Easy: 5 hints & correct placement verification \s
@@ -99,16 +98,13 @@ public class MainMenu {
         startPanel.setSize(400,100);
         start = new JButton("Start");
         startPanel.add(start);
-        start.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (accepted == 1){
-                    Gui.startGame(difficultySelection);
-                }else{
-                    textConfirmButton.setText("Please click a button");
-                    textConfirmButton.setBackground(Color.red);
+        start.addActionListener(e -> {
+            if (accepted == 1){
+                Gui.startGame(difficultySelection);
+            }else{
+                textConfirmButton.setText("Please click a button");
+                textConfirmButton.setBackground(Color.red);
 
-                }
             }
         });
 

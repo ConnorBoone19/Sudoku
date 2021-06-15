@@ -1,7 +1,4 @@
 package Game;
-import java.sql.Time;
-import java.time.*;
-import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 import GUI.Gui;
@@ -13,7 +10,6 @@ public class Sudoku {
     public static int dimensions;
     public static double familyDBL;
     public static int family;
-    private static boolean showSteps = false;
     private static boolean testing = false;
 
     // TODO CODE
@@ -21,9 +17,6 @@ public class Sudoku {
         // TODO add a feature to create a random board
         // TODO using algorithm, make multiple DIFFERENT boards
         // TODO add a variable size board (16x16, 4x4)
-
-    // TODO GUI
-        // TODO add feature to show steps of algorithm in GUI
 
 
     public static void createBoard(){
@@ -59,10 +52,10 @@ public class Sudoku {
     public static void solve(int[][] matrix, int row, int column){
         if (setBoard()) {
             //showBoard(matrix);
-            System.out.println("\n");
+            // System.out.println("\n");
             if (solveBoard(matrix, row, column,false)) {
                 board = matrix;
-                showBoard(board);
+                // showBoard(board);
             } else {
                 System.out.println("Error, board cannot be solved");
             }
@@ -87,7 +80,7 @@ public class Sudoku {
             // if the grid space contains a non 0 the algorithm re-runs itself for the next column
 
             if (board[row][column] != 0) {
-
+                System.out.println("here3");
                 return solveBoard(board, row, (column + 1),steps);
 
             }
@@ -98,18 +91,16 @@ public class Sudoku {
 
                     if (steps){
                         Gui.text[row][column].setText(String.valueOf(number));
-                        try {
-                            TimeUnit.MILLISECONDS.sleep(1);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                     }
                     if (solveBoard(board, row, (column + 1),steps)) {
                         return true;
                     }
                 }
+                board[row][column] = 0;
+
             }
-            board[row][column] = 0;
+            System.out.println("here4");
+
             return false;
 
 
@@ -175,17 +166,16 @@ public class Sudoku {
         testing = false;
 
         // Set to true if wanting to see how well algorithm worked and where it needs improvement
-        showSteps = false;
 
         // Algorithm Start
 
         setBoard();
-        System.out.println("The starting board is: \n");
-        showBoard(board);
-        System.out.println();
+        // System.out.println("The starting board is: \n");
+        // showBoard(board);
+        // System.out.println();
         solveBoard(board,0,0,false);
-        System.out.println("The completed board is: \n");
-        showBoard(board);
+        // System.out.println("The completed board is: \n");
+        // showBoard(board);
 
 
     }
