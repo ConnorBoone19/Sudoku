@@ -10,7 +10,7 @@ public class CreateBoard {
     public static String fileFolder;
 
 
-    public static void newBoard( String name){
+    public static void newBoard(String name){
         fileFolder = "/Users/Connor/Desktop/Coding/JavaProjects/Sudoku/src/9x9Boards/";
         try {
             FileName = new File(fileFolder + name + ".txt");

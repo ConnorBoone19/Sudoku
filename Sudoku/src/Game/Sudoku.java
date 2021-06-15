@@ -49,18 +49,21 @@ public class Sudoku {
         testing("Set board");
         return family == familyDBL;
     }
-    public static void solve(int[][] matrix, int row, int column){
+    public static boolean solve(int[][] matrix, int row, int column){
         if (setBoard()) {
             //showBoard(matrix);
             // System.out.println("\n");
             if (solveBoard(matrix, row, column,false)) {
                 board = matrix;
-                // showBoard(board);
+                showBoard(board);
+                return true;
             } else {
                 System.out.println("Error, board cannot be solved");
+                return false;
             }
         } else {
             System.out.print("Error the board size entered is invalid. Error 2: Board is not a perfect square ");
+            return false;
         }
     }
 
@@ -80,7 +83,6 @@ public class Sudoku {
             // if the grid space contains a non 0 the algorithm re-runs itself for the next column
 
             if (board[row][column] != 0) {
-                System.out.println("here3");
                 return solveBoard(board, row, (column + 1),steps);
 
             }
@@ -99,7 +101,6 @@ public class Sudoku {
                 board[row][column] = 0;
 
             }
-            System.out.println("here4");
 
             return false;
 
@@ -149,8 +150,8 @@ public class Sudoku {
                 // new line
                 System.out.println();
             }
-            System.out.println("Number of Rows: " + matrix.length);
-            System.out.println("Number of Columns: " + matrix[1].length);
+            // System.out.println("Number of Rows: " + matrix.length);
+            // System.out.println("Number of Columns: " + matrix[1].length);
         }
     }
 
