@@ -17,7 +17,7 @@ public class PopulateFile {
             { 0, 0, 0, 0, 0, 0, 0, 0, 0 },};;
     public static int lengthCheck;
 
-    public static void writeToFile(File location){
+    public static void writeToFile(File location,String name){
         try {
             lengthCheck = 0;
             FileWriter fileToWrite = new FileWriter(location);
