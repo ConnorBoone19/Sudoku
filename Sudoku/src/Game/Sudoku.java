@@ -2,25 +2,14 @@ package Game;
 
 import GUI.Gui;
 
-import java.sql.Array;
-import java.util.Arrays;
-import java.util.List;
-
 public class Sudoku {
 
     public static int[][] board;
-    private static int[][] correctBoard;
+    public static int[][] correctBoard;
     public static int dimensions;
     public static double familyDBL;
     public static int family;
     private static boolean testing = false;
-
-    // TODO CODE
-        // TODO add a feature to change size of board
-        // TODO add a feature to create a random board
-        // TODO using algorithm, make multiple DIFFERENT boards
-        // TODO add a variable size board (16x16, 4x4)
-
 
     public static void createBoard(){
         board = new int[][]{
@@ -54,8 +43,6 @@ public class Sudoku {
     }
     public static boolean solve(int[][] matrix, int row, int column){
         if (setBoard()) {
-            // showBoard(matrix);
-            // System.out.println("\n");
             System.out.println(solveBoard(matrix, row, column,false));
 
             if (solveBoard(matrix, row, column,false)) {
@@ -158,8 +145,6 @@ public class Sudoku {
                 // new line
                 System.out.println();
             }
-            // System.out.println("Number of Rows: " + matrix.length);
-            // System.out.println("Number of Columns: " + matrix[1].length);
         }
     }
 
@@ -179,9 +164,6 @@ public class Sudoku {
         // Algorithm Start
 
         setBoard();
-        // System.out.println("The starting board is: \n");
-        // showBoard(board);
-        // System.out.println();
         solveBoard(board,0,0,false);
         System.out.println("The completed board is: \n");
         showBoard(board);

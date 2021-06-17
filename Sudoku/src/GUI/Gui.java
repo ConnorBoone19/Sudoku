@@ -27,7 +27,6 @@ public class Gui {
     public static int dimensions;
     public static int level = -1;
     public static int hintAmount = 0;
-    public static String difficultyLevel = "Easy";
 
 
 

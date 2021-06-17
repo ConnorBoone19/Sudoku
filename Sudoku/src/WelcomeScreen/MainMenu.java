@@ -25,10 +25,11 @@ public class MainMenu {
     public static void mainMenuGUI(){
 
         frame = new JFrame("Welcome");
-        frame.setSize(400,300);
+        frame.setSize(400,400);
         frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        new MMmenu(frame);
         panel = new JPanel();
         text1 = new JTextArea("""
                 Welcome to my Sudoku game! \s
