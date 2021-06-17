@@ -1,7 +1,10 @@
 package Game;
-import java.util.concurrent.TimeUnit;
 
 import GUI.Gui;
+
+import java.sql.Array;
+import java.util.Arrays;
+import java.util.List;
 
 public class Sudoku {
 
@@ -51,11 +54,14 @@ public class Sudoku {
     }
     public static boolean solve(int[][] matrix, int row, int column){
         if (setBoard()) {
-            //showBoard(matrix);
+            // showBoard(matrix);
             // System.out.println("\n");
+            System.out.println(solveBoard(matrix, row, column,false));
+
             if (solveBoard(matrix, row, column,false)) {
                 board = matrix;
                 showBoard(board);
+                System.out.println("Solvable");
                 return true;
             } else {
                 System.out.println("Error, board cannot be solved");
@@ -67,7 +73,7 @@ public class Sudoku {
         }
     }
 
-    public static boolean solveBoard(int[][] board, int row, int column, boolean steps){
+    public static boolean solveBoard(int[][] boardToSolve, int row, int column, boolean steps){
 
             if (column == dimensions && row == (dimensions - 1)) {
                 return true;
@@ -82,23 +88,23 @@ public class Sudoku {
 
             // if the grid space contains a non 0 the algorithm re-runs itself for the next column
 
-            if (board[row][column] != 0) {
-                return solveBoard(board, row, (column + 1),steps);
+            if (boardToSolve[row][column] != 0) {
+                return solveBoard(boardToSolve, row, (column + 1),steps);
 
             }
 
             for (int number = 1; number <= dimensions; number++) {
-                if (isValid(board, row, column, number)) {
-                    board[row][column] = number;
+                if (isValid(boardToSolve, row, column, number)) {
+                    boardToSolve[row][column] = number;
 
                     if (steps){
                         Gui.text[row][column].setText(String.valueOf(number));
                     }
-                    if (solveBoard(board, row, (column + 1),steps)) {
+                    if (solveBoard(boardToSolve, row, (column + 1),steps)) {
                         return true;
                     }
                 }
-                board[row][column] = 0;
+                boardToSolve[row][column] = 0;
 
             }
 
@@ -108,19 +114,21 @@ public class Sudoku {
     }
 
 
-    public static boolean isValid(int[][] board, int row, int column, int number){
+
+
+    public static boolean isValid(int[][] matrix, int row, int column, int number){
 
         for (int i = 0; i <= (dimensions-1); i++){
 
             // checks to see if the number the algorithm wants to place down is already in that column
-            if (board[row][i] == number){
+            if (matrix[row][i] == number){
                 return false;
             }
         }
 
         // checks to see if the number the algorithm wants to place down is already in that row
         for (int j = 0; j <= (dimensions-1); j++){
-            if (board[j][column] == number){
+            if (matrix[j][column] == number){
                 return false;
             }
         }
@@ -130,7 +138,7 @@ public class Sudoku {
 
         for (int k = 0; k < family; k++){
             for (int c = 0; c < family; c++){
-                if (board[k+ROW][c+COL] == number){
+                if (matrix[k+ROW][c+COL] == number){
                     return false;
                 }
             }
@@ -175,8 +183,9 @@ public class Sudoku {
         // showBoard(board);
         // System.out.println();
         solveBoard(board,0,0,false);
-        // System.out.println("The completed board is: \n");
-        // showBoard(board);
+        System.out.println("The completed board is: \n");
+        showBoard(board);
+
 
 
     }

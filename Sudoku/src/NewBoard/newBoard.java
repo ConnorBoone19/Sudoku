@@ -4,40 +4,40 @@ import Game.Sudoku;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
 public class newBoard {
     public static JFrame frame;
     public static JPanel panel;
-    public static JPanel panel2;
+    public static JPanel lowerPanel;
     public static JPanel mainPanel;
     public static JTextField textField;
+    public static JTextField fileName;
+    public static JTextArea validOrNot;
     public static JPanel[][] subGrid ;
     public static JTextArea[][] text;
     public static JButton check;
     public static int dimensions;
     public static int[][] board2;
     public static int clicks = 0;
-
+    public static boolean firstClick = true;
 
 
 // TODO implement feature for user to add their own board
 
     public static void setUpGui(){
         board2 = new int[][]{
-                { 3, 0, 6, 5, 0, 8, 4, 0, 0 },
-                { 5, 2, 0, 0, 0, 0, 0, 0, 0 },
-                { 0, 8, 7, 0, 0, 0, 0, 3, 1 },
-                { 0, 0, 3, 0, 1, 0, 0, 8, 0 },
-                { 9, 0, 0, 8, 6, 3, 0, 0, 5 },
-                { 0, 5, 0, 0, 9, 0, 6, 0, 0 },
-                { 1, 3, 0, 0, 0, 0, 2, 5, 0 },
-                { 0, 0, 0, 0, 0, 0, 0, 7, 4 },
-                { 0, 0, 5, 2, 0, 6, 3, 0, 0 }};
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },};
 
                 dimensions = board2.length;
-                System.out.println(dimensions);
     }
 
     public static void createNewBoardGui(){
@@ -52,21 +52,60 @@ public class newBoard {
         panel = new JPanel(new GridLayout(dimensions,dimensions));
         panel.setSize(400,400);
 
-        panel2 = new JPanel();
-        panel2.setBounds(0,400,400,50);
-        panel2.setLayout(new BorderLayout());
+        lowerPanel = new JPanel();
+        lowerPanel.setBounds(0,400,400,50);
+        lowerPanel.setLayout(new FlowLayout());
 
         textField = new JTextField("");
         textField.setEditable(false);
 
+
+        fileName = new JTextField(20);
+        fileName.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Clears the text when user clicks in the field for the first time
+
+                if (firstClick) {
+                    fileName.setText("");
+                }
+                firstClick = false;
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
+
+
+        fileName.setText("Please enter your desired file name");
+        lowerPanel.add(fileName);
+
+        validOrNot = new JTextArea("hello");
+        validOrNot.setSize(100,50);
+        lowerPanel.add(validOrNot);
+
         check = new JButton("Check");
+
 
         check.addActionListener(e -> {
             if (Sudoku.solve(board2,0,0)){
-                textField.setText("Valid board, press again to save");
+                validOrNot.setText("Valid");
                 clicks = clicks + 1;
-            }else if (Sudoku.solve(board2,0,0)){
-                textField.setText("That is not a valid board");
+            }else if (!Sudoku.solve(board2,0,0)){
+                validOrNot.setText("Invalid");
                 clicks = 0;
                 NBMenu.menu2.setVisible(false);
                 return;
@@ -76,11 +115,13 @@ public class newBoard {
             }
         });
 
+        lowerPanel.add(check);
+
+
         new NBMenu(frame);
-        panel2.add(check);
 
         mainPanel.add(panel);
-        mainPanel.add(panel2);
+        mainPanel.add(lowerPanel);
 
         frame.add(mainPanel);
 
@@ -117,10 +158,10 @@ public class newBoard {
                     public void keyTyped(KeyEvent event) {
                         try {
                             int intValue = Integer.parseInt(String.valueOf(event.getKeyChar()));
-                            if (intValue <= 9 && intValue >= 1) {
+                            if (intValue <= 9 && intValue >= 0) {
                                 board2[finalRow][finalColumn] = intValue;
-                                Sudoku.showBoard(board2);
-                                System.out.println("Added " + intValue + " to board");
+                                // Sudoku.showBoard(board2);
+                                // System.out.println("Added " + intValue + " to board");
                             }
                         }catch (NumberFormatException e){
                             System.out.println("Not a number");

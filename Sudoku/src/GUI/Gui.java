@@ -41,6 +41,7 @@ public class Gui {
             System.exit(99);
         }
         correctBoard = Sudoku.getCorrectBoard();
+        Sudoku.showBoard(correctBoard);
         System.out.println();
         getBoard();
         createBoolBoards();
@@ -123,7 +124,7 @@ public class Gui {
         frame.setSize(400,500);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        // Main panel where lower panel (panel2) and the board panel (panel) will be added
+        // Main panel where lower panel (lowerPanel) and the board panel (panel) will be added
         mainPanel = new JPanel();
         mainPanel.setLayout(null);
 
