@@ -1,12 +1,8 @@
 package BoardCreater;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 
 public class CreateBoard {
     public static File FileName;
@@ -33,8 +29,5 @@ public class CreateBoard {
     }
 
 
-    public static void main(String[] args) {
-        // Add input features for asking how big array is and how difficult it is
-        newBoard("Connor");
-    }
+
 }

@@ -1,5 +1,6 @@
 package NewBoard;
 
+import BoardCreater.Create;
 import WelcomeScreen.MainMenu;
 
 import javax.swing.*;
@@ -8,14 +9,14 @@ import java.awt.event.ActionListener;
 
 public class NBMenu {
 
-    public static JMenu menu2 = new JMenu("Save");
+    public static JMenu saveMenu = new JMenu("Save");
     public static int[][] board;
 
     public NBMenu(JFrame frame){
         JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("Quit");
-        JMenu menu1 = new JMenu("Reset");
-        JMenu menu3 = new JMenu("Home");
+        JMenu quitMenu = new JMenu("Quit");
+        JMenu resetMenu = new JMenu("Reset");
+        JMenu homeMenu = new JMenu("Home");
         JMenuItem quitItem = new JMenuItem("Quit");
         JMenuItem resetItem = new JMenuItem("Reset");
         JMenuItem saveItem = new JMenuItem("Save Board");
@@ -23,27 +24,22 @@ public class NBMenu {
 
         // Quits the game
         quitItem.addActionListener(e -> System.exit(2));
-        menu.add(quitItem);
+        quitMenu.add(quitItem);
 
         // Resets the board
         resetItem.addActionListener(e -> {
             frame.setVisible(false);
             newBoard.create();
         });
-        menu1.add(resetItem);
+        resetMenu.add(resetItem);
 
         // Saves the board
-        //TODO
-        saveItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                board = newBoard.board2;
-            // TODO add a new java class to run all classes to make a file from users board
-
-            }
+        saveItem.addActionListener(e -> {
+            board = newBoard.board2;
+            String Name = newBoard.fileName.getText();
+            Create.createAndPopulate(Name,board);
         });
-        menu2.add(saveItem);
-        menu2.setVisible(false);
+
 
 
         // Returns to the home screen
@@ -51,12 +47,16 @@ public class NBMenu {
             frame.setVisible(false);
             MainMenu.mainMenuGUI();
         });
-        menu3.add(homeItem);
+        homeMenu.add(homeItem);
 
-        menuBar.add(menu);
-        menuBar.add(menu1);
-        menuBar.add(menu2);
-        menuBar.add(menu3);
+        saveMenu.add(saveItem);
+        saveMenu.setVisible(false);
+
+
+        menuBar.add(quitMenu);
+        menuBar.add(resetMenu);
+        menuBar.add(saveMenu);
+        menuBar.add(homeMenu);
         frame.setJMenuBar(menuBar);
 
 

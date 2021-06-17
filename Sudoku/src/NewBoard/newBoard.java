@@ -1,6 +1,6 @@
 package NewBoard;
 
-import Game.Sudoku;
+import Game.Repeat;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +21,7 @@ public class newBoard {
     public static int[][] board2;
     public static int clicks = 0;
     public static boolean firstClick = true;
+    public static boolean validBoard;
 
 
 // TODO implement feature for user to add their own board
@@ -101,17 +102,25 @@ public class newBoard {
 
 
         check.addActionListener(e -> {
-            if (Sudoku.solve(board2,0,0)){
+            // Checks to see if the board a user entered is solvable
+            validBoard = Repeat.checkIfBoardValid(board2);
+            if (validBoard){
                 validOrNot.setText("Valid");
+                validOrNot.setBackground(Color.GREEN);
+                // If the user clicks the check button twice and it returns valid,
+                // the ability to save the board pops up
                 clicks = clicks + 1;
-            }else if (!Sudoku.solve(board2,0,0)){
+            }else {
+
                 validOrNot.setText("Invalid");
+                validOrNot.setBackground(Color.RED);
                 clicks = 0;
-                NBMenu.menu2.setVisible(false);
+                NBMenu.saveMenu.setVisible(false);
                 return;
             }
             if (clicks == 2){
-                NBMenu.menu2.setVisible(true);
+
+                NBMenu.saveMenu.setVisible(true);
             }
         });
 
@@ -160,8 +169,6 @@ public class newBoard {
                             int intValue = Integer.parseInt(String.valueOf(event.getKeyChar()));
                             if (intValue <= 9 && intValue >= 0) {
                                 board2[finalRow][finalColumn] = intValue;
-                                // Sudoku.showBoard(board2);
-                                // System.out.println("Added " + intValue + " to board");
                             }
                         }catch (NumberFormatException e){
                             System.out.println("Not a number");
@@ -189,8 +196,10 @@ public class newBoard {
         frame.setVisible(true);
     }
     public static void boardEdited(){
-        NBMenu.menu2.setVisible(false);
+        NBMenu.saveMenu.setVisible(false);
         clicks = 0;
+        validOrNot.setBackground(Color.white);
+
     }
     public static void create(){
         setUpGui();
